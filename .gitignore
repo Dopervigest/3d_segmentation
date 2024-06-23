@@ -4,6 +4,9 @@
 # Ignore __pycache__ directory 
 scripts/__pycache__/
 
+# Ignore Jupyter checkpoints
+.ipynb_checkpoints/
+
 # Ignore directories with data
 ACDC_simplified/
 data_for_inference/
@@ -25,3 +28,5 @@ models/
 
 # Ignore notebooks that are used for testing scripts
 Untitled*
+
+
