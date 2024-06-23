@@ -1,0 +1,27 @@
+# Ignore all log files
+*.log
+
+# Ignore __pycache__ directory 
+scripts/__pycache__/
+
+# Ignore directories with data
+ACDC_simplified/
+data_for_inference/
+data_for_transfer_learning/
+IntrA3D/
+prepared_data/
+TL_prepared_data/
+
+# Ignore local backups
+backups/
+
+# Ignore directories with predictions
+outputs/
+predictions/
+
+
+# Ignore directories with model weights
+models/
+
+# Ignore notebooks that are used for testing scripts
+Untitled*
