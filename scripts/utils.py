@@ -247,7 +247,8 @@ def dir_checker(path, name):
     return dirname
 
 
-def plot_accuracy(csv_path):
+def plot_accuracy(path, csv_name, save=True):
+    csv_path = path+csv_name
     df = pd.read_csv(csv_path)
     plt.plot(df.epoch, df.accuracy, label='Training accuracy')
     plt.plot(df.epoch, df.val_accuracy, label='Validation accuracy')
@@ -255,8 +256,12 @@ def plot_accuracy(csv_path):
     plt.xlabel('Epochs')
     plt.ylabel('Accuracy')
     plt.legend()
+    if save:
+        plt.savefig(path + '/accuracy.png')
 
-def plot_loss(csv_path):
+
+def plot_loss(path, csv_name, save=True):
+    csv_path = path+csv_name
     df = pd.read_csv(csv_path)
     plt.plot(df.epoch, df.loss, label='Training Loss')
     plt.plot(df.epoch, df.val_loss, label='Validation Loss')
@@ -264,5 +269,8 @@ def plot_loss(csv_path):
     plt.xlabel('Epochs')
     plt.ylabel('Loss')
     plt.legend()
+    if save:
+        plt.savefig(path + '/loss.png')
+
     
     

@@ -1,5 +1,5 @@
 import torch
-from tqdm.notebook import tqdm 
+from tqdm import tqdm 
 
 class Trainer:
     def __init__(self, model, opt, criterion, train_dataloader, test_dataloader, out_dir, epochs, device):
@@ -43,7 +43,7 @@ class Trainer:
                 running_loss += loss.detach() 
                 
                 accuracy = torch.div(torch.sum(torch.argmax(pred, dim=1) == torch.argmax(y, dim=1)),
-                                     y.size(dim=0)) # рассчитать точность для батча
+                                     y.size(dim=0)) 
                 
                 running_acc += accuracy 
                     
@@ -72,19 +72,17 @@ class Trainer:
         
             if running_eval_acc>= best_eval_accuracy:
                     best_eval_accuracy = running_eval_acc
-                    torch.save(self.model, f'{self.out_dir}/best.pt') #сохраняем лучшую модель
+                    torch.save(self.model, f'{self.out_dir}/best.pt') 
         
             
-            # вывод данных в консоль
             print(f'EPOCH {epoch+1}: Loss: {running_loss}, Accuracy: {running_acc}, Best_accuracy: {best_accuracy}')
             print(f'Val_loss: {running_eval_loss}, Val_accuracy: {running_eval_acc}, Best_val_accuracy: {best_eval_accuracy}')
             print()
                 
-            # логирование (вывод данных в файл)
             with open(f'{self.out_dir}/logs.csv', 'a') as file:
                 file.write(f'{epoch+1},{running_loss},{running_acc},{best_accuracy},{running_eval_loss},{running_eval_acc},{best_eval_accuracy}\n')
                   
                     
-        torch.save(self.model, f'{self.out_dir}/last.pt') # сохраняем модель с последней эпохи обучения
+        torch.save(self.model, f'{self.out_dir}/last.pt') 
                 
     
