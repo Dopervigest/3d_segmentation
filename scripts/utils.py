@@ -180,21 +180,7 @@ def equalize_data(list_of_data,list_of_labels, datalen_per_patient = 500, datale
     
     return list_of_data, list_of_labels
 
-def save_mesh_with_color(mesh, new_colors, path):
-    orig_colors = mesh.visual.vertex_colors
-    new_colors = torch.argmax(new_colors, dim=1)
-    for i in range(len(new_colors)):
-        if new_colors[i] == 0:
-            orig_colors[i] = [224, 0, 0, 255]
-        elif new_colors[i] == 1:
-            orig_colors[i] = [0, 224, 0, 255]
-        else:
-            orig_colors[i] = [0, 0, 224, 255]
-        
-    mesh.visual.vertex_colors = orig_colors
-    file = trimesh.exchange.export.export_mesh(mesh, 'obj', None)
-    
-    
+
 def save_mesh_with_color_acdc(mesh, new_colors, path):
     orig_colors = mesh.visual.vertex_colors
     for i in range(len(new_colors)):
@@ -206,9 +192,7 @@ def save_mesh_with_color_acdc(mesh, new_colors, path):
             orig_colors[i] = [0, 0, 224, 255]
         
     mesh.visual.vertex_colors = orig_colors
-    file = trimesh.exchange.export.export_mesh(mesh, 'obj', None)
-    with open(path, mode='w') as f:
-        f.write(file)
+    trimesh.exchange.export.export_mesh(mesh, path, None)
         
         
 def save_mesh_with_color_clinical(mesh, new_colors, path):
@@ -224,9 +208,7 @@ def save_mesh_with_color_clinical(mesh, new_colors, path):
             orig_colors[i] = [150, 150, 150, 255]
         
     mesh.visual.vertex_colors = orig_colors
-    file = trimesh.exchange.export.export_mesh(mesh, 'obj', None)
-    with open(path, mode='w') as f:
-        f.write(file)
+    trimesh.exchange.export.export_mesh(mesh, path, None)
 
 def dir_checker(path, name):
     if os.path.exists(f'{path}/{name[:-4]}'):
@@ -272,5 +254,4 @@ def plot_loss(path, csv_name, save=True):
     if save:
         plt.savefig(path + '/loss.png')
 
-    
     

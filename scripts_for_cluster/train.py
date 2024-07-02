@@ -8,7 +8,9 @@ import torch.nn.functional as F
 from torchsummary import summary
 from torch.utils.data import DataLoader
 from scripts.models import Segmentation_Network_full
-from scripts.models import resnet18 as resnet
+from scripts.models import resnet1, resnet18, resnet34, resnet50, resnet101, resnet152
+
+
 from scripts.models import UNet
 from scripts.unet import Unet_Classification_head as Classification_head
 from scripts.resnet import ResnetDecoder
@@ -111,26 +113,49 @@ elif args['model'] == "unet":
         out_dir += '_no_TL_Unet'
         model = UNet(n_classes=n_classes).float()
 
-elif args['model'] == "resnet":
+
+
+elif "resnet" in args['model']:
+    model_name = args['model']
+
+    if args['model'] == 'resnet1':
+        model = resnet1(1, n_classes=n_classes).float()
+
+    elif args['model'] == 'resnet18':
+        model = resnet18(1, n_classes=n_classes).float()
+
+    elif args['model'] == 'resnet34':
+        model = resnet34(1, n_classes=n_classes).float()
+
+    elif args['model'] == 'resnet50':
+        model = resnet50(1, n_classes=n_classes).float()
+
+    elif args['model'] == 'resnet101':
+        model = resnet101(1, n_classes=n_classes).float()
+
+    elif args['model'] == 'resnet152':
+        model = resnet152(1, n_classes=n_classes).float()
+
+    else:
+        raise ValueError('Wrong resnet model')
 
     if args['tl']:
-        out_dir += '_TL_resnet'
-        model = torch.load('./models/ACDC_resnet/best.pt').cpu()
+        out_dir += f'_TL_{model_name}'
+        model = torch.load(f'./models/ACDC_{model_name}/best.pt').cpu()
         for i in model.parameters():
             i.requires_grad = False
 
         model.decoder = ResnetDecoder(model.encoder.blocks[-1].blocks[-1].expanded_channels, n_classes)
 
     elif args['dataset'] == 'acdc':
-        out_dir += '_resnet'
-        model = resnet(1, n_classes=n_classes).float()
+        out_dir += f'_{model_name}'
     
     else:
-        out_dir += '_no_TL_resnet'
-        model = resnet(1, n_classes=n_classes).float()
+        out_dir += f'_no_TL_{model_name}'
 
 else:
-    raise ValueError('Model must be "cnn", "unet" or "resnet"')
+    raise ValueError('Model must be "cnn", "unet" or one of resnet architectures')
+
 
 opt = torch.optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-5) 
 criterion = F.binary_cross_entropy  

@@ -3,6 +3,7 @@
 import numpy as np
 from . import surface_point_cloud
 from .utils import scale_to_unit_cube, scale_to_unit_sphere
+from .postprocessing import postprocessing
 import trimesh
 
 def get_surface_point_cloud(mesh, surface_point_method='scan', bounding_radius=None, scan_count=100, scan_resolution=400, sample_point_count=10000000, calculate_normals=True):
